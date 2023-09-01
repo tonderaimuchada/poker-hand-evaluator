@@ -23,7 +23,24 @@ public class PokerHandEvaluator {
         for (int y=0; y<selectedIndexes.length; y++) {
             System.out.println(selectedIndexes[y]);
         }
+
+        evaluateHandRank();
         cardsInHand = new HashSet<>(deckOfCards);
+    }
+
+    static void evaluateHandRank(){
+        /* Evaluate the 10 hand-ranking categories
+        checkIfHighCards();
+        checkIfOnePair();
+        checkIfTwoPairs();
+        checkIfThreeOfAKind();
+        checkIfStraight();
+        checkIfFlush();
+        checkIfFullHouse();
+        checkIfFourOfAKind();
+        checkIfStraightFlush();
+        checkIfRoyalFlush();
+        */
     }
 
     static List<Card> loadDeckOfCards(){
