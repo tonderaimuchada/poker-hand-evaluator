@@ -8,9 +8,11 @@ public class PokerHandEvaluator {
     private static List<Card> deckOfCards;
 
     public static void main (String... args) {
-        System.out.println("Choose 5 cards for your hand");
+        System.out.println("Choose 5 unique cards for your hand");
         deckOfCards = loadDeckOfCards();
-        System.out.println(deckOfCards.size());
+        for (int x=0; x<deckOfCards.size(); x++) {
+            System.out.println("Select " + x + ". " + deckOfCards.get(x).getSuit() + " of " + deckOfCards.get(x).getKind());
+        }
         cardsInHand = new HashSet<>(deckOfCards);
     }
 
@@ -20,13 +22,9 @@ public class PokerHandEvaluator {
         String suits[] = {"Spades", "Hearts", "Diamonds", "Clubs"};
         for (int i=0; i<kinds.length; i++) {
             for (int j=0; j<suits.length; j++) {
-                deckOfCards.add(new Card(kinds[i], suits[i]));
+                deckOfCards.add(new Card(kinds[i], suits[j]));
             }
         }
-        deckOfCards.add(new Card("A", "Spades"));
-        deckOfCards.add(new Card("A", "Hearts"));
-        deckOfCards.add(new Card("A", "Diamonds"));
-        deckOfCards.add(new Card("A", "Clubs"));
         return deckOfCards;
     }
 }
