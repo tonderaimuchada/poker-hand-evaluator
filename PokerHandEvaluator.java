@@ -19,8 +19,12 @@ public class PokerHandEvaluator {
         // Scan input from the user
         int selectedIndexes[] = new int[5];
         Scanner scanner = new Scanner(System.in);
-        for (int y=0; y<selectedIndexes.length; y++) {
-            selectedIndexes[y] = Integer.parseInt(scanner.nextLine());
+        try {
+            for (int y=0; y<selectedIndexes.length; y++) {
+                selectedIndexes[y] = Integer.parseInt(scanner.nextLine());
+            }
+        } catch (NumberFormatException exception) {
+            exception.printStackTrace();
         }
 
         evaluateHandRank(selectedIndexes, deckOfCards); //Analyze the choosen hand cards
@@ -62,26 +66,5 @@ public class PokerHandEvaluator {
             }
         }
         return deckOfCards;
-    }
-}
-
-class Card {
-    // Encapsulating instance variables
-    private String suit;
-    private String kind;
-
-    //Constructor to enable building of Card instances
-    Card (String suit, String kind) {
-        this.suit = suit;
-        this.kind = kind;
-    }
-
-    // Public getter methods to access hidden variables
-    public String getSuit(){
-        return suit;
-    }
-
-    public String getKind(){
-        return kind;
     }
 }
