@@ -1,12 +1,12 @@
 class Card {
     // Encapsulating instance variables
-    private String suit;
     private String kind;
+    private String suit;
 
     //Constructor to enable building of Card instances
-    Card (String suit, String kind) {
-        this.suit = suit;
+    Card (String kind, String suit) {
         this.kind = kind;
+        this.suit = suit;
     }
 
     // Public getter methods to access hidden variables
