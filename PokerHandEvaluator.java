@@ -36,6 +36,14 @@ public class PokerHandEvaluator {
     static void evaluateHandRank(Set<Card> cardsInHand){
         System.out.println(checkIfOnePair(cardsInHand));
         System.out.println(checkIfTwoPairs(cardsInHand));
+        int duplicateKindsCount = countDuplicateKinds(cardsInHand);
+        if (duplicateKindsCount == 1) {
+            //one pair
+        } else if (duplicateKindsCount == 2) {
+            //two pairs or 3 of a kind
+        } else if (duplicateKindsCount == 3) {
+            // two pairs or 3 of a kind
+        }
         /* Evaluate the 10 hand-ranking categories
         checkIfHighCards();
         checkIfOnePair(cardsInHand);
@@ -48,16 +56,6 @@ public class PokerHandEvaluator {
         checkIfStraightFlush();
         checkIfRoyalFlush();
         */
-    }
-
-    static boolean checkIfOnePair(Set<Card> cardsInHand){
-        int duplicateKindsCount = countDuplicateKinds(cardsInHand);
-        return duplicateKindsCount == 1 ? true : false; //Return true if there is one instance of a duplicate
-    }
-
-    static boolean checkIfTwoPairs(Set<Card> cardsInHand){
-        int duplicateKindsCount = countDuplicateKinds(cardsInHand);
-        return duplicateKindsCount == 2 ? true : false; //Return true if there are two instances of a duplicate
     }
 
     static int countDuplicateKinds(Set<Card> cardsInHand) {
