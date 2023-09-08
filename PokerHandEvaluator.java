@@ -34,16 +34,18 @@ public class PokerHandEvaluator {
     }
 
     static HandRank evaluateHandRank(Set<Card> cardsInHand){
-        System.out.println(checkIfOnePair(cardsInHand));
-        System.out.println(checkIfTwoPairs(cardsInHand));
+        // System.out.println(checkIfOnePair(cardsInHand));
+        // System.out.println(checkIfTwoPairs(cardsInHand));
         int duplicateKindsCount = countDuplicateKinds(cardsInHand);
+        // int distinctKindsCount = countDistinctKinds(cardsInHand);
         if (duplicateKindsCount == 1) {
-            //one pair
+            return HandRank.ONEPAIR;
         } else if (duplicateKindsCount == 2) {
-            //two pairs or 3 of a kind
+            return HandRank.TWOPAIR;
         } else if (duplicateKindsCount == 3) {
             // two pairs or 3 of a kind
         }
+        return HandRank.HIGHCARD;
         /* Evaluate the 10 hand-ranking categories
         checkIfHighCards();
         checkIfOnePair(cardsInHand);
@@ -59,7 +61,7 @@ public class PokerHandEvaluator {
     }
 
     static int countDuplicateKinds(Set<Card> cardsInHand) {
-        int count = 0;
+        // int count = 0;
         List<String> kinds = new ArrayList<>();
         for (Card card : cardsInHand) {
             kinds.add(card.getKind());
