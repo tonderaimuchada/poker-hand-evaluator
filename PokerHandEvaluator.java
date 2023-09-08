@@ -30,10 +30,10 @@ public class PokerHandEvaluator {
             exception.printStackTrace();
         }
 
-        evaluateHandRank(cardsInHand); //Analyze the choosen hand cards
+        System.out.println(evaluateHandRank(cardsInHand)); //Analyze the choosen hand cards
     }
 
-    static void evaluateHandRank(Set<Card> cardsInHand){
+    static HandRank evaluateHandRank(Set<Card> cardsInHand){
         System.out.println(checkIfOnePair(cardsInHand));
         System.out.println(checkIfTwoPairs(cardsInHand));
         int duplicateKindsCount = countDuplicateKinds(cardsInHand);
