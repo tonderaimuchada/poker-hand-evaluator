@@ -1,0 +1,12 @@
+enum HandRank{
+    FIVEOFAKIND,
+    STRAIGHTFLUSH,
+    FOUROFAKIND,
+    FULLHOUSE,
+    FLUSH,
+    STRAIGHT,
+    THREEOFAKIND,
+    TWOPAIR,
+    ONEPAIR,
+    HIGHCARD
+}

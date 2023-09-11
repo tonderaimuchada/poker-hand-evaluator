@@ -37,6 +37,7 @@ public class PokerHandEvaluator {
         // System.out.println(checkIfOnePair(cardsInHand));
         // System.out.println(checkIfTwoPairs(cardsInHand));
         int duplicateKindsCount = countDuplicateKinds(cardsInHand);
+        System.out.println(duplicateKindsCount);
         // int distinctKindsCount = countDistinctKinds(cardsInHand);
         if (duplicateKindsCount == 1) {
             return HandRank.ONEPAIR;
