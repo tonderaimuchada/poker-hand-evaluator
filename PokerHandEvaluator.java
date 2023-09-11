@@ -4,10 +4,17 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.Collections;
+import java.util.stream.Stream;
+import java.util.Comparator;
+import java.util.Arrays;
 
 public class PokerHandEvaluator {
     private static Set<Card> cardsInHand; // The combination includes community cards
     private static List<Card> deckOfCards;
+    private static List<String> globalKinds = Arrays.asList(new String[]{"A", "K", "Q", "J", "10", "9", "8", "7", "6", "5", "4", "3", "2"});
+    private static List<String> globalSuits = Arrays.asList(new String[]{"Spades", "Hearts", "Diamonds", "Clubs"});
 
     public static void main (String... args) {
         System.out.println("Choose 5 unique cards for your hand. Press enter after every choice!"); // Prompt the user to input cards of choice from a deck list
@@ -34,17 +41,32 @@ public class PokerHandEvaluator {
     }
 
     static HandRank evaluateHandRank(Set<Card> cardsInHand){
-        // System.out.println(checkIfOnePair(cardsInHand));
-        // System.out.println(checkIfTwoPairs(cardsInHand));
+        int distinctKindsCount = countDistinctKinds(cardsInHand);
         int duplicateKindsCount = countDuplicateKinds(cardsInHand);
-        System.out.println(duplicateKindsCount);
-        // int distinctKindsCount = countDistinctKinds(cardsInHand);
+        int distinctSuitsCount = countDistinctSuits(cardsInHand);
+        boolean isHandStraight = checkIfHandIsStraight(cardsInHand);
+        boolean isATheFirstElement = checkIfAIsTheFirstElement(cardsInHand);
+
+        // Evaluate the 10 hand-ranking categories
         if (duplicateKindsCount == 1) {
             return HandRank.ONEPAIR;
-        } else if (duplicateKindsCount == 2) {
+        } else if (duplicateKindsCount == 2 && distinctKindsCount == 3) {
             return HandRank.TWOPAIR;
-        } else if (duplicateKindsCount == 3) {
-            // two pairs or 3 of a kind
+        } else if (duplicateKindsCount == 1 && distinctKindsCount == 3) {
+            return HandRank.THREEOFAKIND;
+        } else if (duplicateKindsCount == 2 && distinctKindsCount == 2) {
+            return HandRank.FULLHOUSE;
+        } else if (duplicateKindsCount == 1 && distinctKindsCount == 2){
+            return HandRank.FOUROFAKIND;
+        } else if (isHandStraight) {
+            if (distinctSuitsCount == 1){
+                if (isATheFirstElement)
+                    return HandRank.FIVEOFAKIND;
+                return HandRank.STRAIGHTFLUSH;
+            }
+            return HandRank.STRAIGHT;
+        } else if (distinctSuitsCount == 1) {
+            return HandRank.FLUSH;
         }
         return HandRank.HIGHCARD;
         /* Evaluate the 10 hand-ranking categories
@@ -61,24 +83,65 @@ public class PokerHandEvaluator {
         */
     }
 
-    static int countDuplicateKinds(Set<Card> cardsInHand) {
-        // int count = 0;
+    static int countDistinctKinds(Set<Card> cardsInHand) {
         List<String> kinds = new ArrayList<>();
         for (Card card : cardsInHand) {
             kinds.add(card.getKind());
-            System.out.println(card.getKind());
         }
-        return cardsInHand.size() - (int) kinds.stream().distinct().count();
+        return (int) kinds.stream().distinct().count();
+    }
+
+    static int countDuplicateKinds(Set<Card> cardsInHand) {
+        List<String> kinds = new ArrayList<>();
+        for (Card card : cardsInHand) {
+            kinds.add(card.getKind());
+        }
+        return kinds.stream().filter(i -> Collections.frequency(kinds, i) > 1).collect(Collectors.toSet()).size();
+    }
+
+    static int countDistinctSuits(Set<Card> cardsInHand) {
+        List<String> suits = new ArrayList<>();
+        for (Card card : cardsInHand) {
+            suits.add(card.getSuit());
+        }
+        return (int) suits.stream().distinct().count();
+    }
+
+    static boolean checkIfHandIsStraight(Set<Card> cardsInHand) {
+        List<String> kinds = new ArrayList<>();
+        for (Card card : cardsInHand) {
+            kinds.add(card.getKind());
+        }
+        Collections.sort(kinds, new Comparator<String>() {
+                public int compare(String kind1, String kind2) {
+                    return kinds.indexOf(kind2) - kinds.indexOf(kind1);
+                }});
+        System.out.println("sortedlist is" + kinds.toString());
+        for (int i=0; i<kinds.size() - 1; i++) { // -1 to avoid IndexOutOfBoundsException from comparing the last element with non-existing element
+            if (globalKinds.indexOf(kinds.get(i)) != globalKinds.indexOf(kinds.get(i+1)) + 1) //Check if the next index is 1 value above the current index
+                return false;
+        }
+        return true;
+    }
+
+    static boolean checkIfAIsTheFirstElement(Set<Card> cardsInHand) {
+        List<String> kinds = new ArrayList<>();
+        for (Card card : cardsInHand) {
+            kinds.add(card.getKind());
+        }
+        Collections.sort(kinds, new Comparator<String>() {
+                public int compare(String kind1, String kind2) {
+                    return kinds.indexOf(kind1) - kinds.indexOf(kind2);
+                }});
+        return kinds.get(0).equals("A") ? true : false;
     }
 
     // Loading cards to the deck. In this case, with all kinds and suits
     static List<Card> loadDeckOfCards(){
         List<Card> deckOfCards = new ArrayList<>();
-        String kinds[] = {"A", "K", "Q", "J", "10", "9", "8", "7", "6", "5", "4", "3", "2"};
-        String suits[] = {"Spades", "Hearts", "Diamonds", "Clubs"};
-        for (int i=0; i<kinds.length; i++) {
-            for (int j=0; j<suits.length; j++) {
-                deckOfCards.add(new Card(kinds[i], suits[j]));
+        for (int i=0; i<globalKinds.size(); i++) {
+            for (int j=0; j<globalSuits.size(); j++) {
+                deckOfCards.add(new Card(globalKinds.get(i), globalSuits.get(j)));
             }
         }
         return deckOfCards;
