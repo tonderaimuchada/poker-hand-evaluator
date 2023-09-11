@@ -69,18 +69,6 @@ public class PokerHandEvaluator {
             return HandRank.FLUSH;
         }
         return HandRank.HIGHCARD;
-        /* Evaluate the 10 hand-ranking categories
-        checkIfHighCards();
-        checkIfOnePair(cardsInHand);
-        checkIfTwoPairs(cardsInHand);
-        checkIfThreeOfAKind();
-        checkIfStraight();
-        checkIfFlush();
-        checkIfFullHouse();
-        checkIfFourOfAKind();
-        checkIfStraightFlush();
-        checkIfRoyalFlush();
-        */
     }
 
     static int countDistinctKinds(Set<Card> cardsInHand) {
@@ -116,7 +104,6 @@ public class PokerHandEvaluator {
                 public int compare(String kind1, String kind2) {
                     return kinds.indexOf(kind2) - kinds.indexOf(kind1);
                 }});
-        System.out.println("sortedlist is" + kinds.toString());
         for (int i=0; i<kinds.size() - 1; i++) { // -1 to avoid IndexOutOfBoundsException from comparing the last element with non-existing element
             if (globalKinds.indexOf(kinds.get(i)) != globalKinds.indexOf(kinds.get(i+1)) + 1) //Check if the next index is 1 value above the current index
                 return false;
